@@ -1,6 +1,7 @@
 <template>
     <div>
         <p v-for="business in applications">The {{ business.agency}} is looking for {{ business.civil_service_title }}</p>
+        <p></p>
     </div>
 </template>
 
