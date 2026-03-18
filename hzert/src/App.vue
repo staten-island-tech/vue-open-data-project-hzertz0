@@ -9,6 +9,8 @@
 
 </script>
 
-<style scoped>
-
+<style>
+body {
+  background-color: rgb(156, 219, 255);
+}
 </style>
