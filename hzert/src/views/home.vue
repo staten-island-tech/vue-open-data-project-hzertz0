@@ -10,7 +10,7 @@
 import { ref, onMounted } from 'vue'
 
 const applications = ref([])
-const jobTypes = ref([])
+const jobTypes = []
 
 async function getData() {
   try {
@@ -18,11 +18,6 @@ async function getData() {
     const data = await response.json()
     applications.value = data
 
-    applications.value.forEach((application) => {
-      if (!jobTypes.includes(application.civil_service_title)) {
-        jobTypes.push(application.civil_service_title)
-      }
-    })
   } catch (error) {
     console.log(error)
   }
@@ -33,16 +28,18 @@ onMounted(() => {
 })
 
 function showJobs() {
+  applications.value.forEach((application) => {
+      if (!jobTypes.includes(application.civil_service_title)) {
+        jobTypes.push(application.civil_service_title)
+      }
+    })
   console.log(jobTypes)
 }
 
 function mostPopular() {
   const jobCounts = []
-
   applications.value.forEach((application) => {
     const title = application.civil_service_title
-    if (!title) return
-
     const existing = jobCounts.find((job) => job.title === title)
 
     if (existing) {
@@ -51,7 +48,12 @@ function mostPopular() {
       jobCounts.push({ title: title, count: 1 })
     }
   })
+  let averageDemand = 0
+  jobCounts.forEach((job) => {
+    averageDemand = (averageDemand+job.count/jobCounts.length)
+  })
   console.log(jobCounts)
+  console.log(Math.round(averageDemand))
 }
 </script>
 
