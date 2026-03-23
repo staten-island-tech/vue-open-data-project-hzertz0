@@ -1,8 +1,10 @@
 <template>
   <div>
+    <h1>Job Demand Viewer</h1>
+    <!--<p v-for="business in applications">The {{ business.agency}} is looking for {{ business.civil_service_title }}</p>-->
+    <img src="/jobapplication.png">
     <button @click="showJobs">View Job Types</button>
     <button @click="mostPopular">View Job Demands</button>
-    <!--<p v-for="business in applications">The {{ business.agency}} is looking for {{ business.civil_service_title }}</p>-->
   </div>
 </template>
 
@@ -62,6 +64,10 @@ function mostPopular() {
   font-family: 'inter';
 }
 
+h1 {
+  text-align: center;
+}
+
 button {
   background-color: rgb(255, 255, 255);
   border: none;
@@ -72,5 +78,13 @@ button {
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
+}
+
+img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%
 }
 </style>
