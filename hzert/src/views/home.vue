@@ -1,11 +1,18 @@
 <template>
-  <div>
-    <h1>Job Demand Viewer</h1>
-    <!--<p v-for="business in applications">The {{ business.agency}} is looking for {{ business.civil_service_title }}</p>-->
-    <img src="/jobapplication.png">
-    <button @click="showJobs">View Job Types</button>
-    <button @click="mostPopular">View Job Demands</button>
+  <h1>Job Demand Viewer</h1>
+  <!--<p v-for="business in applications">The {{ business.agency}} is looking for {{ business.civil_service_title }}</p>-->
+  <div class="container">
+    <div class="card">
+      <h2>name</h2>
+      <p>View the current demand of common jobs!</p>
+    </div>
+    <div class="card">
+      <h2>name</h2>
+      <p>View the most demanded jobs!</p>
+    </div>
   </div>
+  <button @click="showJobs">View Job Types</button>
+  <button @click="mostPopular">View Job Demands</button>
 </template>
 
 <script setup>
@@ -19,7 +26,6 @@ async function getData() {
     const response = await fetch('https://data.cityofnewyork.us/resource/kpav-sd4t.json')
     const data = await response.json()
     applications.value = data
-
   } catch (error) {
     console.log(error)
   }
@@ -31,10 +37,10 @@ onMounted(() => {
 
 function showJobs() {
   applications.value.forEach((application) => {
-      if (!jobTypes.includes(application.civil_service_title)) {
-        jobTypes.push(application.civil_service_title)
-      }
-    })
+    if (!jobTypes.includes(application.civil_service_title)) {
+      jobTypes.push(application.civil_service_title)
+    }
+  })
   console.log(jobTypes)
 }
 
@@ -52,7 +58,7 @@ function mostPopular() {
   })
   let averageDemand = 0
   jobCounts.forEach((job) => {
-    averageDemand = (averageDemand+job.count/jobCounts.length)
+    averageDemand = averageDemand + job.count / jobCounts.length
   })
   console.log(jobCounts)
   console.log(Math.round(averageDemand))
@@ -66,6 +72,8 @@ function mostPopular() {
 
 h1 {
   text-align: center;
+  background-color: white;
+  padding: 10px;
 }
 
 button {
@@ -80,11 +88,26 @@ button {
   border-radius: 8px;
 }
 
-img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 40%
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  background: white;
+  width: 300px;
+  height: 500px;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  margin: 25px;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
 }
 </style>
