@@ -2,17 +2,15 @@
   <h1>Job Demand Viewer</h1>
   <!--<p v-for="business in applications">The {{ business.agency}} is looking for {{ business.civil_service_title }}</p>-->
   <div class="container">
-    <div class="card">
-      <h2>name</h2>
+    <RouterLink to="/commonjobs"><div class="card">
+      <h2>Jobs Demand Tracker</h2>
       <p>View the current demand of common jobs!</p>
-    </div>
-    <div class="card">
+    </div></RouterLink>
+    <div class ="card" @click="showJobs">
       <h2>name</h2>
       <p>View the most demanded jobs!</p>
     </div>
   </div>
-  <button @click="showJobs">View Job Types</button>
-  <button @click="mostPopular">View Job Demands</button>
 </template>
 
 <script setup>
@@ -71,6 +69,8 @@ function mostPopular() {
 }
 
 h1 {
+  position: absolute;
+  width: 100%;
   text-align: center;
   background-color: white;
   padding: 10px;
@@ -109,5 +109,15 @@ button {
 .card:hover {
   transform: scale(1.05);
   transition: transform 0.3s ease;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:visited {
+  text-decoration: none;
+  color: inherit;
 }
 </style>
