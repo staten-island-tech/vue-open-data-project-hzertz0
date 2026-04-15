@@ -17,9 +17,6 @@
 </script>
 
 <style scoped>
-* {
-  font-family: 'inter';
-}
 
 h1 {
   position: absolute;

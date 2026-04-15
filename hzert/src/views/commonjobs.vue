@@ -1,31 +1,35 @@
 <template>
+  <h1>Job Demand Tracker</h1>
   <div>
     <canvas ref="chartRef"></canvas>
-    <button @click="showJobs">showJobs</button>
+    <RouterLink to="/"><button>Return to Home</button></RouterLink>
     <button @click="mostPopular">mostPopular</button>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import Chart from 'chart.js/auto'
 
 const chartRef = ref(null)
+let chartInstance = null
+
 const labels = [
-  'Architect',
-  'Electrical Engineer',
-  'Cook',
-  'Painter',
-  'Physician',
-  'Computer Specialist',
   'Civil Engineer',
+  'Computer Specialist (Software)',
+  'Accountant',
+  'Machinist',
+  'Architect',
+  'Economist',
+  'Painter',
 ]
+
 const data = {
   labels,
   datasets: [
     {
-      label: 'My First Dataset',
-      data: [65, 59, 80, 81, 56, 55, 40],
+      label: 'Job Listings',
+      data: [],
       backgroundColor: [
         'rgba(100, 99, 132, 0.8)',
         'rgba(1, 159, 64, 0.8)',
@@ -55,8 +59,8 @@ const jobTypes = []
 async function getData() {
   try {
     const response = await fetch('https://data.cityofnewyork.us/resource/kpav-sd4t.json')
-    const data = await response.json()
-    applications.value = data
+    const fetchedData = await response.json()
+    applications.value = fetchedData
   } catch (error) {
     console.log(error)
   }
@@ -64,7 +68,7 @@ async function getData() {
 
 onMounted(() => {
   getData()
-  new Chart(chartRef.value, {
+  chartInstance = new Chart(chartRef.value, {
     type: 'bar',
     data,
     options: {
@@ -74,15 +78,6 @@ onMounted(() => {
     },
   })
 })
-
-function showJobs() {
-  applications.value.forEach((application) => {
-    if (!jobTypes.includes(application.civil_service_title)) {
-      jobTypes.push(application.civil_service_title)
-    }
-  })
-  console.log(jobTypes)
-}
 
 function mostPopular() {
   const jobCounts = []
@@ -101,8 +96,42 @@ function mostPopular() {
     averageDemand = averageDemand + job.count / jobCounts.length
   })
   console.log(jobCounts)
-  console.log(Math.round(averageDemand))
 }
+
+function getCountsForLabels() {
+  const jobCounts = []
+
+  applications.value.forEach((application) => {
+    const title = application.civil_service_title
+    const existing = jobCounts.find((job) => job.title === title)
+
+    if (existing) {
+      existing.count++
+    } else {
+      jobCounts.push({ title: title, count: 1 })
+    }
+  })
+
+    const labelCounts = labels.map((label) => {
+    const found = jobCounts.find((job) => job.title === label.toUpperCase())
+    return { title: label, count: found ? found.count : 0 }
+  })
+
+  data.datasets[0].data = labelCounts.map((job) => job.count)
+
+  console.log(labelCounts)
+
+  chartInstance.data.datasets[0].data = data.datasets[0].data
+  chartInstance.update()
+
+  return labelCounts
+}
+
+watch(applications, (newVal) => {
+  if (newVal.length > 0) {
+    getCountsForLabels()
+  }
+})
 </script>
 
 <style scoped>
@@ -116,5 +145,12 @@ button {
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+  background-color: white;
+  padding: 10px;
 }
 </style>
