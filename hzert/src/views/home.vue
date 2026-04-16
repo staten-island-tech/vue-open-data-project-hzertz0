@@ -6,8 +6,8 @@
       <p>View the current demand of common jobs!</p>
     </div></RouterLink>
     <RouterLink to="/jobdemand"><div class="card">
-      <h2>name</h2>
-      <p>View the most demanded jobs!</p>
+      <h2>Job Agency Tracker</h2>
+      <p>View the agency that demands the most jobs!</p>
     </div></RouterLink>
   </div>
 </template>
