@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import home from '@/views/home.vue'
 import commonjobs from '@/views/commonjobs.vue'
+import jobdemand from '@/views/jobdemand.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +15,11 @@ const router = createRouter({
       path: '/commonjobs',
       name: 'common',
       component:commonjobs
+    },
+        {
+      path: '/jobdemand',
+      name: 'demand',
+      component:jobdemand
     },
   ],
 })
